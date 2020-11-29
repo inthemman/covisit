@@ -7,8 +7,8 @@ const context = canvas.getContext('2d');
 
 const video = document.querySelector('video');
 const size = {
-    w : 640,
-    h: 480,
+    w : 480,
+    h: 640,
     s : 224,
 }
 
@@ -64,9 +64,6 @@ async function loadCamera(stream) {
     
 }
 async function unloadCamera(stream) {
-    stream.getTracks().forEach( (track) => {
-        track.stop();
-    });
     video.pause();
     video.removeAttribute('src');
 }
@@ -74,8 +71,13 @@ document.getElementById("pass").addEventListener("click",() => {
     if(document.getElementById('agree').checked) {
         mySwiper.slideNext();
     } else {
-        alert("개인 정보 수집에 동의해주세요");
+        alert("개인 정보 수집에 동의해주세요.");
     }
+});
+document.getElementById("good").addEventListener("click",()=>{
+    mySwiper.slideTo(1);
+    loadCamera(stream);
+    document.getElementById('check').removeChild();
 })
 
 load();
