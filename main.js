@@ -22,7 +22,7 @@ function log(data) {
 }
 async function load() {
     drawOff = false;
-    model = await tf.loadLayersModel('./mask_js/model.json');
+    model = await tf.loadLayersModel('./maskmaybe/model.json');
     log("Model Loaded")
     stream = await navigator.mediaDevices.getUserMedia({video:true});
     
