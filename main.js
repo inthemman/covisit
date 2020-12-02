@@ -42,12 +42,14 @@ async function load() {
             myFace = document.createElement("canvas");
             myFace.width = 224;
             myFace.height = 224;
-            myFace.getContext("2d").drawImage(video,(size.w-224)/2,(size.h-224)/2,224,224,0,0,224,224);
+            myFace.getContext("2d").drawImage(canvas,(size.w-224)/2,(size.h-224)/2,224,224,0,0,224,224);
             isMasked = await idDetect(myFace);
             let masked= isMasked[0] > isMasked[1];
             if(masked) {
                 unloadCamera(stream);
                 charCache.writeValue(encoder.encode("pass"))
+                document.getElementById('check').innerText = isMasked[0] + ' ' + isMasked[1] + "Mask!!"
+                document.getElementById('check').appendChild(myFace);
                 mySwiper.slideNext();
             } else {
                 document.getElementById('check').innerText = isMasked[0] + ' ' + isMasked[1] + "No Mask!!"
@@ -129,6 +131,10 @@ loading.addEventListener("click",async () => {
                 if(decoded == "cap") {
                     if(mySwiper.realIndex == 1) {
                         canvas.click();
+                    }
+                } else if(decoded =="xxx") {
+                    if(mySwiper.realIndex == 3) {
+                        document.getElementById('good').click();
                     }
                 }
             })
