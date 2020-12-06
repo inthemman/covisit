@@ -12,8 +12,8 @@ const decoder = new TextDecoder();
 
 const video = document.querySelector('video');
 const size = {
-    w : 480,
-    h: 640,
+    w : 640,
+    h: 480,
     s : 224,
 }
 
@@ -21,6 +21,7 @@ function log(data) {
     loadScreen.innerHTML += "<br>" + data;
 }
 async function load() {
+    await faceapi.nets.ssdMobilenetv1.loadFromUri('./fmodel')
     drawOff = false;
     model = await tf.loadLayersModel('./maskmaybe/model.json');
     log("Model Loaded")
@@ -28,7 +29,9 @@ async function load() {
     
 
     mySwiper = new Swiper('.swiper-container',{
-        allowTouchMove : false
+        allowTouchMove : false,
+        preventClicks : false,
+        preventClicksPropagation: false
     });
 
     setTimeout(()=>{
@@ -37,23 +40,41 @@ async function load() {
             // stopped = 1;
             context.drawImage(video,0,0,size.w,size.h);
             context.beginPath();
-            context.rect((size.w-224)/2,(size.h-224)/2,224,224);
+            context.lineWidth = 1;
+            context.strokeStyle = "red";
+            context.rect((size.w-224)/2 - 1,(size.h-224)/2 - 1,226,226);
             context.stroke();
             myFace = document.createElement("canvas");
             myFace.width = 224;
             myFace.height = 224;
             myFace.getContext("2d").drawImage(canvas,(size.w-224)/2,(size.h-224)/2,224,224,0,0,224,224);
+            const detection = await faceapi.detectSingleFace(myFace,new faceapi.SsdMobilenetv1Options({minConfidence : 0.1}));
+            let faceFully
+            if(detection) {
+                console.log(detection);
+                if(detection.score > 0.6) {
+                    faceFully = true;
+                } else {
+                    faceFully = false;
+                }
+            } else {
+                console.log("why no")
+            }
+            // console.log(detection.score);
+            // let faceDetected = detection.score > 0.5;
             isMasked = await idDetect(myFace);
-            let masked= isMasked[0] > isMasked[1];
-            if(masked) {
+            let masked= isMasked[0] > 0.8;
+            if(masked && detection && !faceFully) {
                 unloadCamera(stream);
-                charCache.writeValue(encoder.encode("pass"))
                 document.getElementById('check').innerText = isMasked[0] + ' ' + isMasked[1] + "Mask!!"
                 document.getElementById('check').appendChild(myFace);
                 mySwiper.slideNext();
             } else {
-                document.getElementById('check').innerText = isMasked[0] + ' ' + isMasked[1] + "No Mask!!"
+                document.getElementById('check').innerText = isMasked[0] + ' ' + isMasked[1] + "No Mask!! or No face"
                 document.getElementById('check').appendChild(myFace);
+                if(charCache) {
+                    charCache.writeValue(encoder.encode("no"));
+                }
             }
         })
         mySwiper.slideNext();
@@ -83,11 +104,32 @@ async function unloadCamera(stream) {
     video.removeAttribute('src');
 }
 document.getElementById("pass").addEventListener("click",() => {
-    if(!document.getElementById('agree').checked) {
-        alert("개인 정보 수집에 동의해주세요.");
+    let reg = /^\d{10,11}$/;
+    let phoneVal = document.getElementById('phone').value;
+    let rsVal = document.getElementById('rs').value;
+    if(!phoneVal || !rsVal) {
+        alert("모든 정보를 입력해야합니다!");
+    } else if(!reg.exec(phoneVal)) {
+        alert("전화번호를 제대로 입력해야합니다!")
+    } else if(!rsVal.endsWith("구") && !rsVal.endsWith("동")) {
+        alert("구나 동으로 주소가 끝나야합니다!")
     } else {
         mySwiper.slideNext();
+        db.visitors.put({
+            date : new Date(),
+            tel : phoneVal,
+            resi : rsVal,
+        }).then(() => {
+            console.log("GOOD VISITORS");
+            return db.visitors.each(vis => console.log(vis));
+        })
+        if(charCache) {
+            charCache.writeValue(encoder.encode("pass"));
+        }
+        document.getElementById('phone').value = '';
+        document.getElementById('rs').value = '';
     }
+    
 });
 document.getElementById("good").addEventListener("click",()=>{
     mySwiper.slideTo(1);
@@ -132,7 +174,7 @@ loading.addEventListener("click",async () => {
                     if(mySwiper.realIndex == 1) {
                         canvas.click();
                     }
-                } else if(decoded =="xxx") {
+                } else if(decoded =="XXX") {
                     if(mySwiper.realIndex == 3) {
                         document.getElementById('good').click();
                     }
@@ -140,10 +182,10 @@ loading.addEventListener("click",async () => {
             })
         })
         console.log(charCache)
+        charCache.writeValue(encoder.encode("done"));
     }).catch(err => {
         log("오류 : " + err);
         console.log(err);
     })
     load();
 });
-

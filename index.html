@@ -8,10 +8,24 @@
     <title>Mask Detecting And Visitor List</title>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
+    <script src="face-api.js"></script> 
+    <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+    <script defer src=db.js></script>
     <script src="mask.js"></script>
     <script defer src=main.js></script>
 </head>
 <body>
+    <button id=dbshow>V</button>
+    <div id=dbscreen>
+        <div>
+            <div id=msg>방문자 목록을 조회하려면 비밀번호를 입력해야 합니다.(설정한 비밀번호가 없다면 입력한 비밀번호로 설정됩니다.)</div>
+            <input type=password placeholder="비밀번호" id=pwdVal>
+            <button id=pwdSub>보기</button>
+        </div>
+        <div id=grid>
+            <div>날짜</div><div>전화번호</div><div>거주지</div>
+        </div>
+    </div>
     <div class="swiper-container">
         <div id=main class="swiper-wrapper">
             <div class="swiper-slide" id=loading>
@@ -24,10 +38,9 @@
                 <div id=check></div>
             </div>
             <div class="swiper-slide" id=info>
-                <label for=phone>연락처</label><input name=phone type=tel pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"><br>
-                <label for=residance>거주지</label><input name=residance type=text><br>
-                <label for=agree>개인정보 수집 동의</label><input name=agree type=checkbox id=agree><br>
-                <button id=pass>PASS</button>
+                <label for=phone>연락처</label><input name=phone type=tel pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" id=phone><br>
+                <label for=residance>거주지</label><input name=residance type=text id=rs><br>
+                <button id=pass type=submit>개인 정보 수집에 동의합니다.</button>
             </div>
             <div class="swiper-slide" id=good>
                 출입 가능!!
