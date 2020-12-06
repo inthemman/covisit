@@ -5,7 +5,7 @@ const infoScreen = document.getElementById("info");
 const canvas = document.querySelector('#canvas');
 const context = canvas.getContext('2d');
 
-let deviceCache,charCache,valueCache,decoded;
+let deviceCache,charCache,valueCache,decoded,temp=null;
 
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
@@ -119,6 +119,7 @@ document.getElementById("pass").addEventListener("click",() => {
             date : new Date(),
             tel : phoneVal,
             resi : rsVal,
+            temp : temp
         }).then(() => {
             console.log("GOOD VISITORS");
             return db.visitors.each(vis => console.log(vis));
@@ -178,6 +179,9 @@ loading.addEventListener("click",async () => {
                     if(mySwiper.realIndex == 3) {
                         document.getElementById('good').click();
                     }
+                } else if(parseFloat(decoded)) {
+                    document.getElementById('temp').innerText = decoded;
+                    temp = decoded;
                 }
             })
         })

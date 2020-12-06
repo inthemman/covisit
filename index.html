@@ -23,7 +23,7 @@
             <button id=pwdSub>보기</button>
         </div>
         <div id=grid>
-            <div>날짜</div><div>전화번호</div><div>거주지</div>
+            <div>날짜</div><div>전화번호</div><div>거주지</div><div>체온</div>
         </div>
     </div>
     <div class="swiper-container">
@@ -35,6 +35,7 @@
             <div class="swiper-slide" id=camera>
                 <video id="video" autoplay style="display:none"></video>
                 <canvas id="canvas"></canvas>
+                <div id=temp></div>
                 <div id=check></div>
             </div>
             <div class="swiper-slide" id=info>
@@ -43,7 +44,7 @@
                 <button id=pass type=submit>개인 정보 수집에 동의합니다.</button>
             </div>
             <div class="swiper-slide" id=good>
-                출입 가능!!
+                <div>출입 가능합니다.</div>
             </div>
         </div>
     </div>

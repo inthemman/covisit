@@ -1,6 +1,6 @@
 let db = new Dexie("visitors_database");
 db.version(1).stores({
-    visitors:'++id,date,tel,resi',
+    visitors:'++id,date,tel,resi,temp',
     pwd:'val'
 });
 document.getElementById('dbshow').addEventListener("click",function()  {
@@ -24,7 +24,7 @@ document.getElementById('pwdSub').addEventListener('click',() => {
             db.visitors.each(visit => {
                 console.log(visit);
                 let grid = document.getElementById("grid");
-                grid.innerHTML += `<div>${visit.date.toLocaleString()}</div><div>${visit.tel}</div><div>${visit.resi}</div>`;
+                grid.innerHTML += `<div>${visit.date.toLocaleString()}</div><div>${visit.tel}</div><div>${visit.resi}</div><div>${visit.temp}</div>`;
             })
         } else {
             alert("비밀번호가 맞지 않습니다.")
