@@ -52,7 +52,7 @@ async function load() {
             let faceFully
             if(detection) {
                 console.log(detection);
-                if(detection.score > 0.6) {
+                if(detection.score > 0.65) {
                     faceFully = true;
                 } else {
                     faceFully = false;

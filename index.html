@@ -15,8 +15,8 @@
     <script defer src=main.js></script>
 </head>
 <body>
-    <button id=dbshow>V</button>
-    <div id=dbscreen>
+    <button id=dbshow class=shadow>V</button>
+    <div id=dbscreen class=shadow>
         <div>
             <div id=msg>방문자 목록을 조회하려면 비밀번호를 입력해야 합니다.(설정한 비밀번호가 없다면 입력한 비밀번호로 설정됩니다.)</div>
             <input type=password placeholder="비밀번호" id=pwdVal>
@@ -34,16 +34,19 @@
             </div>
             <div class="swiper-slide" id=camera>
                 <video id="video" autoplay style="display:none"></video>
-                <canvas id="canvas"></canvas>
-                <div id=temp></div>
+                <canvas id="canvas" class=shadow></canvas>
+                <div id=temp>온도</div>
                 <div id=check></div>
             </div>
             <div class="swiper-slide" id=info>
-                <label for=phone>연락처</label><input name=phone type=tel pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" id=phone><br>
-                <label for=residance>거주지</label><input name=residance type=text id=rs><br>
-                <button id=pass type=submit>개인 정보 수집에 동의합니다.</button>
+                <div id=form>
+                    <label for=phone>연락처</label><input name=phone type=tel pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" id=phone><br>
+                    <label for=residance>거주지</label><input name=residance type=text id=rs><br>
+                </div>
+                <button id=pass type=submit class=shadow>개인 정보 수집에 동의합니다.</button>
             </div>
             <div class="swiper-slide" id=good>
+                <img src="source.gif" class=shadow>
                 <div>출입 가능합니다.</div>
             </div>
         </div>

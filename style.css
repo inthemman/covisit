@@ -21,13 +21,14 @@ canvas {
     height : 80%;
     -webkit-transform: scaleX(-1);
     transform: scaleX(-1);
+    box-shadow:         0px 3px 12px 0px rgba(53, 50, 50, 0.6);
 }
 #camera {
     display :flex;
     flex-direction: column;
     justify-content : center;
     align-items : center;
-    
+    background-color : #f5f5f5;
 }
 * {
     box-sizing : border-box;
@@ -39,6 +40,7 @@ input[type=text], input[type=tel] {
     box-sizing :border-box;
     outline : 0;
     border : none;
+    box-shadow: inset 0px 0px 6px 0px rgba(50, 50, 50, 0.2)
 }
 input[type=text]:active, input[type=tel]:active {
     outline : 0;
@@ -60,6 +62,7 @@ input[type=text]:active, input[type=tel]:active {
 #pass:active{
     border : none;
     outline : 0;
+    box-shadow:none;
     
 }
 #buttonWrapper {
@@ -76,24 +79,60 @@ label {
     right : 10px;
     z-index : 100000;
     border : none;
-    border-radius : 7px;
     font-size : 20px;
     outline : none;
     background-color :#204051;
     color : aliceblue;
 }
 #dbscreen {
-    position : absolute;
-    top : 10px;
-    z-index : 100;
-    display : none;
-    background-color: azure;
+    position: absolute;
+    top: 10px;
+    z-index: 100;
+    display: none;
+    background-color:#cae8d5;
+    left: 10px;
+    width: calc(100% - 55px);
+    padding: 10px;
 }
 #grid {
     display : grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
 }
-
+#grid div:nth-child(2n-1) {
+    background-color :#b2d1bd;
+}
+#grid div:nth-child(2n) {
+    background-color : #84a9ac;
+}
+#form {
+    position :relative;
+    top : 20px;
+}
+.shadow {
+    box-shadow:         0px 3px 12px 0px rgba(53, 50, 50, 0.5);
+    border-radius: 3px;
+}
+#form input {
+    margin-top : 2px;
+}
+#good {
+    display : flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#good img {
+    width: 80%;
+}
+#good div {
+    margin-top: 20px;
+    color: gray;
+}
+#temp {
+    margin-top: 14px;
+    color: #868686;
+    font-size: 25px;
+}
 /* div {
     border : solid;
 } */
