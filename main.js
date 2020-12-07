@@ -12,8 +12,8 @@ const decoder = new TextDecoder();
 
 const video = document.querySelector('video');
 const size = {
-    w : 640,
-    h: 480,
+    w : 480,
+    h: 640,
     s : 224,
 }
 
@@ -23,7 +23,7 @@ function log(data) {
 async function load() {
     await faceapi.nets.ssdMobilenetv1.loadFromUri('./fmodel')
     drawOff = false;
-    model = await tf.loadLayersModel('./maskmaybe/model.json');
+    model = await tf.loadLayersModel('./blackmask/model.json');
     log("Model Loaded")
     stream = await navigator.mediaDevices.getUserMedia({video:true});
     
@@ -52,7 +52,7 @@ async function load() {
             let faceFully
             if(detection) {
                 console.log(detection);
-                if(detection.score > 0.65) {
+                if(detection.score > 0.8) {
                     faceFully = true;
                 } else {
                     faceFully = false;
@@ -66,11 +66,23 @@ async function load() {
             let masked= isMasked[0] > 0.8;
             if(masked && detection && !faceFully) {
                 unloadCamera(stream);
-                document.getElementById('check').innerText = isMasked[0] + ' ' + isMasked[1] + "Mask!!"
+                document.getElementById('check').innerHTML = `<div>` + isMasked[0] + ' ' + isMasked[1] + "Mask!!" + `</div>`
                 document.getElementById('check').appendChild(myFace);
                 mySwiper.slideNext();
             } else {
-                document.getElementById('check').innerText = isMasked[0] + ' ' + isMasked[1] + "No Mask!! or No face"
+                let tempText = `<div>` + isMasked[0] + ' ' + isMasked[1];
+                if(!masked) {
+                    tempText += `No mask!!`
+                }
+                if(faceFully) {
+                    tempText += `<br>NomaskDouble${detection.score}`
+                }
+                if(!detection) {
+                    tempText += ` No Face!!`
+                }
+                tempText += `${size.w}X${size.h}`
+                tempText += `</div>`
+                document.getElementById('check').innerHTML = tempText;
                 document.getElementById('check').appendChild(myFace);
                 if(charCache) {
                     charCache.writeValue(encoder.encode("no"));

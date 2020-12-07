@@ -133,6 +133,20 @@ label {
     color: #868686;
     font-size: 25px;
 }
+#check {
+    position: absolute;
+    bottom: 0;
+    font-size: 7px;
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+}
+#check canvas{
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
 /* div {
     border : solid;
 } */
